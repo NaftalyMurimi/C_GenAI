@@ -7,7 +7,7 @@
                       <ul class="nav">
                           <li><a href="{%url 'index'%}"><i><img src="{% static 'images/settings.png'%}" alt="" /></i>Home</a></li>
                           <li ><a href="#"><i><img src="{% static 'images/user.png'%}" alt="" /></i>About</a></li>
-                          <li><a href="{%url 'courses'%}"><i><img src="{% static 'images/mail.png'%}" alt="" /></i>Courses </a></li>
+                          <li><a href="{%url 'courses'%}"><i><img src="{% static 'images/mail.png'%}" alt="" /></i>Courses Catalog</a></li>
                           <li><a href="#"><i><img src="{% static 'images/favourite.png'%}" alt="" /></i>Favorites</a></li>
                       <div class="clear"></div>
                       </ul>
@@ -23,7 +23,7 @@
                                           <h4><a href="#"> Welcome</a></h4>
                                           <ul>
                                               <li class="profile active"><a href="{%url 'signup'%}">Sigh Up </a></li>
-                                              <li class="logout"><a href="#"> Logout</a></li>
+                                              <li class="logout"><a href="{%url 'signin'%}"> Sign In</a></li>
                                               <div class="clear"></div>		
                                           </ul>
                                       </div>			                            

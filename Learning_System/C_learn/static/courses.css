@@ -93,7 +93,7 @@
     margin-bottom: 15px;
     border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
     border-radius: 5px;
-    overflow: hidden;
+    
   }
   
   .faq .faq-container .faq-item:last-child {
