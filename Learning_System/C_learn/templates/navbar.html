@@ -1,0 +1,42 @@
+{%load static%}
+<div class="">	 
+    <div class="header">
+          <div class="header_top">
+                <div class="menu">
+                    <a class="toggleMenu" href="#"><img src="{% static 'images/nav.png'%}" alt="" /></a>
+                      <ul class="nav">
+                          <li><a href="{%url 'index'%}"><i><img src="{% static 'images/settings.png'%}" alt="" /></i>Home</a></li>
+                          <li ><a href="#"><i><img src="{% static 'images/user.png'%}" alt="" /></i>About</a></li>
+                          <li><a href="{%url 'courses'%}"><i><img src="{% static 'images/mail.png'%}" alt="" /></i>Courses </a></li>
+                          <li><a href="#"><i><img src="{% static 'images/favourite.png'%}" alt="" /></i>Favorites</a></li>
+                      <div class="clear"></div>
+                      </ul>
+                      <script type="text/javascript" src="{% static 'responsive-nav.js'%}"></script>
+                  </div>	
+                <div class="profile_details">
+                         <div id="loginContainer">
+                            <a id="loginButton" class=""><span>Hi</span></a>   
+                              <div id="loginBox">                
+                              <form id="loginForm">
+                                  <fieldset id="body">
+                                      <div class="user-info">
+                                          <h4><a href="#"> Welcome</a></h4>
+                                          <ul>
+                                              <li class="profile active"><a href="{%url 'signup'%}">Sigh Up </a></li>
+                                              <li class="logout"><a href="#"> Logout</a></li>
+                                              <div class="clear"></div>		
+                                          </ul>
+                                      </div>			                            
+                                  </fieldset>
+                              </form>
+                          </div>
+                      </div>
+                       <div class="profile_img">	
+                           <a href="#"><img src="{% static 'images/profile_img40x40.jpg'%}" alt="" />	</a>
+                       </div>		
+                       <div class="clear"></div>		  	
+                  </div>	
+                 <div class="clear"></div>				 
+             </div>
+      </div>	  					     
+</div>

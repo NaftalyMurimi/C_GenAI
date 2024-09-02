@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content%}
+{%include 'navbar.html'%}
+	 		 
+ <div class="column_middle">
+            
+           
+		         <div class="tweets">
+		               <h3><i><img src="images/tweets.png" alt="" /> </i> Latest Tweets</h3>		              
+						<div class="tweets_list">
+				      		<ul>
+						  		<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore <a href="#">@Neque</a>
+						  			<span>10 minutes ago</span></li>
+						  	   <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore eiusmod <a href="#">#Creative Cloud</a>
+						  			<span>2 hours ago</span></li>
+				    		</ul>
+				      </div>
+		          </div>
+                  <div class="social_network_likes">
+                    <ul>
+                        <li><a href="#" class="facebook"><i><img src="{% static 'images/facebook_icon.png'%}" alt=""></i> <span>248k</span></a></li>
+                        <li><a href="#" class="twitter"><i><img src="{% static 'images/tweets.png'%}" alt=""></i> <span>30k</span></a></li>
+                        <li><a href="#" class="googleplus"><i><img src="{% static 'images/google+.png'%}" alt=""></i> <span>124k</span></a></li>
+                        <li><a href="#" class="mail"><i><img src="{% static 'images/mail-hover.png'%}" alt=""></i> <span>89k</span></a></li>
+                        <div class="clear"></div>
+                    </ul>
+                  </div>
+		         	           
+		       
+    	    </div>
+    	    
+  
+ 	</div>
+    </div>
+{%endblock%}
+

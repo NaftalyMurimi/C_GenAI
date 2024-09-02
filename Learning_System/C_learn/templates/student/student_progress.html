@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content%}
+{%include 'navbar.html'%}
+
+	<div class="main">  
+		<!-- removed wrap -->
+	    <div class="">  		 
+	       <!-- <div class="course_left">	          
+	    		 <div class="menu_box">
+	    		 	 <h3>Menu Box</h3>
+	    		 	   <div class="menu_box_list">
+				      		<ul>
+						  		<li><a href="#" class="messages"><span>Messages</span><label class="digits">24</label><div class="clear"></div></a></li>
+						  		<li class="active"><a href="#" class="invites"><span>Invites </span><label class="digits active">3</label><div class="clear"></div></a></li>
+						  		<li><a href="#" class="events"><span>Events</span><label class="digits">5</label><div class="clear"></div></a></li>
+						  		<li><a href="#" class="account_settings"><span>Account Settings</span></a></li>
+						  		<li><a href="#" class="statistics"><span>Statistics</span></a></li>						  	
+				    		</ul>
+				      </div>
+	    		 </div>
+	    		
+	  		</div>  -->
+        {%include 'student/student_sidebar.html'%}
+
+<div class="course_middle">
+  <div class="column_right_grid downloading_uploading">
+    <ul>
+<li>                              
+          <div class="progress">
+            <div class="progress-bar" style="width:81%"> </div>
+          </div>
+          <div class="clearfix">
+              <p class="downloading"> <i><img src="{%static 'images/download.png'%}" alt="" /></i> Downloading...</p>
+              <p class="percentage">81<em>%</em></p>
+              <div class="clear"></div>
+          </div>
+         </li>
+         <li>                              
+          <div class="progress">
+            <div class="progress-bar uploading" style="width:43%"> </div>
+          </div>
+          <div class="clearfix">
+              <p class="downloading"><i><img src="{%static 'images/upload.png'%}" alt="" /></i> Uploading...</p>
+              <p class="percentage">43<em>%</em></p>
+              <div class="clear"></div>
+          </div>
+         </li>
+      </ul>
+</div> 
+		       
+    	    </div>
+			<script src="{%static 'glightbox.js'%}"></script>
+			<script src="{%static 'glightbox.min.js'%}"></script>
+           
+    	<div class="clear"></div>
+ 	 </div>
+    </div>
+	{% include 'footer.html'%}
+{%endblock%}
+
