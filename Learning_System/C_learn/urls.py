@@ -10,4 +10,5 @@ urlpatterns = [
     path('student_dashboard/', views.student_dashboard, name='student_dashboard'),
     path('student_progress/', views.student_progress, name='student_progress'),
     path('student_profile/', views.student_profile, name='student_profile'),
+    path('c_compiler/', views.c_compiler, name='c_compiler'),
 ]

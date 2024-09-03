@@ -1,0 +1,41 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content%}
+{%include 'navbar.html'%}
+
+	<div class="main">  
+		<!-- removed wrap -->
+	    <div class="">  		 
+	       {% include 'student/student_sidebar.html'%}
+
+<div class="course_middle">
+                 <!-- Faq Section -->
+ <i class="mobile-nav-toggle d-xl-none bi bi-list" style="display: none;"></i>
+    <section id="faq" class="faq section">
+  <a href="{%url 'student_dashboard'%}" style="width: 50px; padding: 3px; background-color: rgb(9, 9, 56); border-radius: 4px;"> Back</a>
+		<div class="container " style="background-color: rgb(215, 240, 231); border-radius: 7px;">
+                
+           
+
+        <div data-pym-src="https://www.jdoodle.com/embed/v1/3a69b148f69a5907"></div>
+        <script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"> </script>
+
+    
+    
+		  
+  
+		</div>
+		<a href="#" style="display: none;" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+ 
+	  </section><!-- /Faq Section --> 
+		       
+    	    </div>
+			<script src="{%static 'glightbox.js'%}"></script>
+			<script src="{%static 'glightbox.min.js'%}"></script>
+           
+    	<div class="clear"></div>
+ 	 </div>
+    </div>
+	{% include 'footer.html'%}
+{%endblock%}
+

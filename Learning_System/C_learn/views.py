@@ -17,4 +17,15 @@ def student_profile(request):
     return render(request, "student/student_profile.html")
 def student_progress(request):
     return render(request, "student/student_progress.html")
+def c_compiler(request):
+    return render(request, "student/c_compiler.html")
+
+
+
+
+
+
+
+
+
 
