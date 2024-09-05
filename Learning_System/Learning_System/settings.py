@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'C_learn',
+    'six',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +41,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+#register the users in the admin panel
+AUTH_USER_MODEL = 'users.CustomUser'
+
+#EMAIL SETTINGS
+AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'nafmurimi@gmail.com'
+EMAIL_HOST_USER ='nafmurimi@gmail.com'
+EMAIL_HOST_PASSWORD = 'ogpy igjg jvxn wjtb'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+PASSWORD_RESET_TIMEOUT = 14400
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

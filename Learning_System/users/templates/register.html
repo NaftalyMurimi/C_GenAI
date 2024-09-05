@@ -1,0 +1,19 @@
+{% extends 'header.html'%}
+
+{% block content%}
+<div class="container-lg">
+    <form action="" method="post">
+        {% csrf_token%}
+        <fieldset class="form-control">
+            <legend class="border-bottom mb-4 text-center">Join Us</legend>
+            {{form.as_p}}
+        </fieldset>
+        <button class="btn btn-outline-info " type="submit"> Sign Up!</button>
+    </form>
+    <div class="border-top pt-3">
+        <P class="muted">Already Have An account <a href="/" class="ml-2">Sign In</a></P>
+    </div>
+</div>
+
+
+{% endblock %}

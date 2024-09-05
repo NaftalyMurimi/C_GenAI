@@ -1,0 +1,21 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content%}
+{%include 'navbar.html'%}
+
+	<div class="main">  
+		<!-- removed wrap -->
+	    <div class="">  		 
+	       {% include 'student/student_sidebar.html'%}
+
+<div class="course_middle">
+    <h1 style="text-align: center; font-size: xx-large;">Welcome to our learning system {{user.username}} !</h1>
+
+</div>
+           
+    	<div class="clear"></div>
+ 	 </div>
+    </div>
+	{% include 'footer.html'%}
+{%endblock%}
+
