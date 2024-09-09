@@ -23,26 +23,43 @@
 	  		
             <div class="signin_middle">
                 {%include 'message.html' %}
-                <div class="column_right_grid sign-in">
-                    <div class="sign_in">
-                      <h3>Sign in to your account</h3>
-                      <form action="" method="post">
-                        {%csrf_token%}
-                        {{form.as_p}}
-                        <input type="submit" class="my-button" value="Sign In">
-                      </form>
-                      
-                          <h4><a href="{%url 'signin'%}">Already have an account? Sign in</a></h4>				   
+                <div class="bdyform">
+                    <div class="">
+                        <div class="registration-container">
+                            <div class="form-header">
+                                <h2>Create an Account</h2>
+                            </div>
+                            <form method="post" class="registration-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="id_username">Username</label>
+                                    {{ form.username }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_email">Email</label>
+                                    {{ form.email }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password1">Password</label>
+                                    {{ form.password1 }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password2">Confirm Password</label>
+                                    {{ form.password2 }}
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="submit-btn">Register</button>
+                                </div>
+                            </form>
+                            <h4 style="text-align: center;"><a href="{%url 'signin'%}">Already have an account? Sign in</a></h4>	
                         </div>
-                        <div class="signin_facebook">
-                           <p><a href="#">  <i> <img src="{%static 'images/google+.png'%}" alt="" /></i>Sign in with Google</a></p>
-                     </div>
-                  </div>
-            	           
-		        
-		                    
-		       
-    	    </div>
+                     
+                      
+                        			   
+                    </div>
+                    
+                </div>
+            </div>
     	    
            
     	<div class="clear"></div>

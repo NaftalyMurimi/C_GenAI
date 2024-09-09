@@ -1,171 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: large;
+}
 
-/* Fonts */
-:root {
-    --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --heading-font: "Raleway",  sans-serif;
-    --nav-font: "Poppins",  sans-serif;
-  }
-  
-  /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-  :root { 
-    --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-    --default-color: #212529; /* Default color used for the majority of the text content across the entire website */
-    --heading-color: #21413c; /* Color for headings, subheadings and title throughout the website */
-    --accent-color: #1bac91; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-    --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-    --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
-  }
-  
-  /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
-  :root {
-    --nav-color: #ffffff;  /* The default color of the main navmenu links */
-    --nav-hover-color: #1bac91; /* Applied to main navmenu links when they are hovered over or active */
-    --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-    --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-    --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
-    --nav-dropdown-hover-color: #1bac91; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
-  }
-  
-  /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
-  
-  .light-background {
-    --background-color: #f2f9f9;
-    --surface-color: #ffffff;
-  }
-  
-  .dark-background {
-    --background-color: #060606;
-    --default-color: #ffffff;
-    --heading-color: #ffffff;
-    --surface-color: #252525;
-    --contrast-color: #ffffff;
-  }
-  
-  /* Smooth scroll */
-  :root {
-    scroll-behavior: smooth;
-  }
-  
-  /*--------------------------------------------------------------
-  # General Styling & Shared Classes
-  --------------------------------------------------------------*/
-  body {
-    color: var(--default-color);
-    background-color: var(--background-color);
-    font-family: var(--default-font);
-  }
-  
-  a {
-    color: var(--accent-color);
-    text-decoration: none;
-    transition: 0.3s;
-  }
-  
-  a:hover {
-    color: color-mix(in srgb, var(--accent-color), transparent 25%);
-    text-decoration: none;
-  }
-  
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: var(--heading-color);
-    font-family: var(--heading-font);
-  }
-  
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
 
-  
+.accordion-container {
+  width: 100%;
  
-  
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
+.accordion-item {
+  background-color: #fff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-btn {
+  width: 100%;
+  background-color: #ffffff;
+  color: rgb(10, 6, 6);
+  border: none;
+  text-align: left;
+  padding: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-btn:hover {
+  background-color: #9be1e6;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 0 15px;
+  transition: max-height 0.3s ease;
+  /* font-size: 14px; */
+}
+
+.accordion-content p {
+  padding: 10px 0;
+
+}
+.accordion-content h1 {
+  padding: 0;
+  font-size: x-large;
+}
+.accordion-content ul {
+  margin-left: 20px ;
+}
+.accordion-content ul li {
+  list-style-type: disc;
+  padding: 5px 0;
+}
+.accordion-content ol li {
+  list-style-type: lower-roman;
+  padding: 5px 20px;
+}
 
 
-  
-  /*--------------------------------------------------------------
-  # Faq Section
-  --------------------------------------------------------------*/
-  .faq .faq-container .faq-item {
-    background-color: var(--surface-color);
-    position: relative;
-    padding: 20px;
-    margin-bottom: 15px;
-    border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
-    border-radius: 5px;
-    
+.accordion-item.active .accordion-content {
+  max-height: 100%; /* Adjust depending on the content length */
+}
+
+@media (max-width: 768px) {
+  .accordion-btn {
+      font-size: 14px;
   }
-  
-  .faq .faq-container .faq-item:last-child {
-    margin-bottom: 0;
+
+  .accordion-content p {
+      font-size: 12px;
   }
-  
-  .faq .faq-container .faq-item h3 {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    margin: 0 30px 0 0;
-    transition: 0.3s;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .faq .faq-container .faq-item h3 .num {
-    color: var(--accent-color);
-    padding-right: 5px;
-  }
-  
-  .faq .faq-container .faq-item h3:hover {
-    color: var(--accent-color);
-  }
-  
-  .faq .faq-container .faq-item .faq-content {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: 0.3s ease-in-out;
-    visibility: hidden;
-    opacity: 0;
-  }
-  
-  .faq .faq-container .faq-item .faq-content p {
-    margin-bottom: 0;
-    overflow: hidden;
-  }
-  
-  .faq .faq-container .faq-item .faq-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 16px;
-    line-height: 0;
-    transition: 0.3s;
-    cursor: pointer;
-  }
-  
-  .faq .faq-container .faq-item .faq-toggle:hover {
-    color: var(--accent-color);
-  }
-  
-  .faq .faq-container .faq-active {
-    background-color: color-mix(in srgb, var(--accent-color), transparent 97%);
-    border-color: color-mix(in srgb, var(--accent-color), transparent 80%);
-  }
-  
-  .faq .faq-container .faq-active h3 {
-    color: var(--accent-color);
-  }
-  
-  .faq .faq-container .faq-active .faq-content {
-    grid-template-rows: 1fr;
-    visibility: visible;
-    opacity: 1;
-    padding-top: 10px;
-  }
-  
-  .faq .faq-container .faq-active .faq-toggle {
-    transform: rotate(90deg);
-    color: var(--accent-color);
-  }
-  
- 
+}

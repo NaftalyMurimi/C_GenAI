@@ -141,23 +141,23 @@ def custom_logout(request):
 
 
 @login_required
-def password_change(request):
+def student_change_password(request):
     user = request.user
     if request.method == 'POST':
         form = SetPasswordForm(user, request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Your password has been changed")
-            return redirect('login')
+            return redirect('signin')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
 
     form = SetPasswordForm(user)
-    return render(request, 'password_change.html', {'form': form})
+    return render(request, 'student/student_change_password.html', {'form': form})
 
 @user_not_authenticated
-def password_recovery(request):
+def student_password_recovery(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
         if form.is_valid():
@@ -187,7 +187,7 @@ def password_recovery(request):
                 else:
                     messages.error(request, "Problem sending reset password email, <b>SERVER PROBLEM</b>")
 
-            return redirect('homepage')
+            return redirect('signin')
 
         for key, error in list(form.errors.items()):
             # if key == 'captcha' and error[0] == 'This field is required.':
@@ -197,7 +197,7 @@ def password_recovery(request):
     form = PasswordResetForm()
     return render(
         request=request, 
-        template_name="password_recovery.html", 
+        template_name="student/student_password_recovery.html", 
         context={"form": form}
         )
 def passwordResetConfirm(request, uidb64, token):
@@ -214,12 +214,12 @@ def passwordResetConfirm(request, uidb64, token):
             if form.is_valid():
                 form.save()
                 messages.success(request, 'You password has been set Successfuly, Continue to LOGIN')
-                return redirect('homepage')
+                return redirect('signin')
             else:
                 for error in list(form.errors.values()):
                     messages.error(request, error)
         form = SetPasswordForm(user)
-        return render(request, 'password_change.html', {'form': form})
+        return render(request, 'student/student_change_password.html', {'form': form})
     else:
         messages.error('Link has Expired')
     messages.error(request, 'Something went Wrong, Redirectint you to the homepage')
@@ -241,6 +241,8 @@ def student_home(request):
 def student_dashboard(request):
     return render(request, "student/student_dashboard.html")
 
+# def student_change_password(request):
+#     return render(request, "student/student_change_password.html")
 
 
 
@@ -283,4 +285,5 @@ def student_profile(request):
     return render(request, "student/student_profile.html")
 def student_progress(request):
     return render(request, "student/student_progress.html")
-
+def c_compiler(request):
+    return render(request, "student/c_compiler.html")
