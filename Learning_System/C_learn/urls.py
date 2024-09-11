@@ -19,5 +19,5 @@ urlpatterns = [
     path('student_change_password/', views.student_change_password, name='student_change_password'),
     path('student_password_recovery/', views.student_password_recovery, name= 'student_password_recovery'),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name = 'password_reset_confirm'),
-    path('profile/<username>', views.profile, name='profile'),
+    # path('student_profile_update/<username>', views.student_profile_update, name='student_profile_update'),
 ]

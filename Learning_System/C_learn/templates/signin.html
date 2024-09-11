@@ -30,6 +30,7 @@
                             <h2>Login to your Account</h2>
                         </div>
                         <form method="post" class="registration-form">
+                            {%include 'message.html' %}
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="id_username">Username</label>
@@ -55,7 +56,7 @@
 		        
 		                    
 		       
-    	  </div>
+    	</div>
     	    
            
     	<div class="clear"></div>

@@ -67,22 +67,13 @@ def activate(request, uidb64, token):
         return redirect('signin')
     else:
         messages.error(request, 'Activation Link is Invalid')
-    return redirect('student_dashboard')
+    return redirect('signin')
 
 @user_not_authenticated
-def signup(request):
-    #check if user is logged in or not because registered and logged in 
-    # users cannot be allowed to create an account
-    # if request.user.is_authenticated:
-    #    return  redirect('/')
-    
+def signup(request):  
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            # user = form.save()
-            # login(request, user)
-            # messages.success(request, f'New account created:{user.username}')
-            # return redirect('/')
             user = form.save(commit=False)
             user.is_active = False
             user.save()
@@ -104,40 +95,42 @@ def signup(request):
 #create logout and login functions
 @user_not_authenticated
 def signin(request):
-    # if request.user.is_authenticated:
-    #     return redirect('homepage')
+    # Redirect if the user is already authenticated
+    if request.user.is_authenticated:
+        return redirect('student_home')
+
     if request.method == 'POST':
         form = UserLoginForm(request=request, data=request.POST)
         if form.is_valid():
             user = authenticate(
                 username=form.cleaned_data['username'],
-                password = form.cleaned_data['password'],
+                password=form.cleaned_data['password'],
             )
             if user is not None:
+                # If user exists and credentials are valid
                 login(request, user)
-                messages.success(request, f'Hello <b>{user.username}</b> you have been logged in')
+                messages.success(request, f'Hello <b>{user.username}</b>, you have been logged in successfully.')
                 return redirect('student_home')
-            else:
-                for key, error in list(form.errors.items()):
-                    # if key == 'captcha' and error[0]=='This field is required':
-                    #     messages.error(request, 'You must pass the reCAPTCHA test')
-                    #     continue
-                    messages.error(request, error)
+            # else:
+            #     # If the authentication fails, display the message
+            #     messages.error(request, 'Incorrect username or password. Please try again.')
+        else:
+            # If form is invalid, display form errors
+            # for key, error in form.errors.items():
+            #     messages.error(request, f'{error}')
+            messages.error(request, 'Incorrect username or password. Please try again.')
 
-    form = UserLoginForm()
-    return render(
-        request=request,
-        template_name='signin.html',
-        context={'form': form}
-    )
+    else:
+        form = UserLoginForm()
 
+    return render(request, 'signin.html', {'form': form})
 
 
 
 def custom_logout(request):
     logout(request)
     messages.info(request, 'Logged out successfully')
-    return redirect('index')
+    return redirect('signin')
 
 
 @login_required
@@ -176,8 +169,8 @@ def student_password_recovery(request):
                 if email.send():
                     messages.success(request,
                         """
-                        <h2>Password reset sent</h2><hr>
-                        <p>
+                        
+                        <p style="text-align: center; color: #34e906;">
                             We've emailed you instructions for setting your password, if an account exists with the email you entered. 
                             You should receive them shortly.<br>If you don't receive an email, please make sure you've entered the address 
                             you registered with, and check your spam folder.
@@ -223,23 +216,35 @@ def passwordResetConfirm(request, uidb64, token):
     else:
         messages.error('Link has Expired')
     messages.error(request, 'Something went Wrong, Redirectint you to the homepage')
-    return redirect('homepage')
+    return redirect('index')
 
-def profile(request, username):
-    if request.method == 'POST':
-        pass
-    user = get_user_model().objects.filter(username=username).first()
-    if user:
-        form = UserUpdateForm(instance=user)
-        return render(request, 'users/profile.html', context={'form':form})
-    return redirect('homepage')
+
+
+
+
+# def student_profile_update(request, username):
+#     if request.method == 'POST':
+#         pass
+#     user = get_user_model().objects.filter(username=username).first()
+#     if user:
+#         form = UserUpdateForm(instance=user)
+#         return render(request, 'student_profile_update.html', context={'form':form})
+#     return redirect('student_home')
 
 
 def student_home(request):
-    return render(request, "student/student_home.html")
+    if request.user.is_authenticated:
+        return render(request, 'student/student_home.html')
+    else:
+        return redirect('signins')
+
 
 def student_dashboard(request):
-    return render(request, "student/student_dashboard.html")
+    if request.user.is_authenticated:
+        return render(request,'student/student_dashboard.html')
+    else:
+        return redirect('signin')
+    # return render(request, "student/.html")
 
 # def student_change_password(request):
 #     return render(request, "student/student_change_password.html")
