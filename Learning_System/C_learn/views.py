@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model, login
 from django.contrib import messages
 from .forms import UserRegistrationForm
@@ -22,7 +22,7 @@ from .forms import UserLoginForm
 from .forms import SetPasswordForm, PasswordResetForm
 from django.contrib.auth.forms import PasswordChangeForm   
 from django.db.models.query_utils import Q
-
+from .models import Course, Topic, StudentProgress
 
 # libraries for email auethentication
 
@@ -251,6 +251,67 @@ def student_dashboard(request):
 
 
 
+@login_required
+def student_dashboard(request):
+    user = request.user
+    courses = Course.objects.all()
+
+    for course in courses:
+        for topic in course.topics.all():  
+            try:
+                progress = StudentProgress.objects.get(student=user, topic=topic)
+                topic.completed = progress.completed
+                topic.progress = 100 if progress.completed else 0
+            except StudentProgress.DoesNotExist:
+                topic.completed = False
+                topic.progress = 0
+
+    # Pass the course data to the template
+    return render(request, 'student/student_dashboard.html', {'courses': courses})
+
+
+@login_required
+def mark_complete(request, topic_id):
+    topic = get_object_or_404(Topic, id=topic_id)
+    progress, created = StudentProgress.objects.get_or_create(student=request.user, topic=topic)
+    
+    if not progress.completed:
+        progress.completed = True
+        progress.save()
+    
+    return redirect('student_dashboard')
+@login_required
+def student_progress(request):
+    user = request.user
+    courses = Course.objects.all()
+    progress = []
+    
+    for course in courses:
+        topics = Topic.objects.filter(course=course)
+        total_topics = topics.count()
+        completed_topics = 0
+        
+        for topic in topics:
+            progress_record, created = StudentProgress.objects.get_or_create(student=user, topic=topic)
+            if progress_record.completed:
+                completed_topics += 1
+        
+        course_completion = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
+        progress.append({
+            'course_name': course.name,
+            'completion_percentage': course_completion,
+            'topics': topics
+        })
+
+    completion_percentage = sum([course['completion_percentage'] for course in progress]) / len(progress) if progress else 0
+
+    context = {
+        'progress': progress,
+        'completion_percentage': completion_percentage
+    }
+
+    return render(request, 'student/student_progress.html', context)
+
 
 
 
@@ -288,7 +349,6 @@ def courses(request):
 
 def student_profile(request):
     return render(request, "student/student_profile.html")
-def student_progress(request):
-    return render(request, "student/student_progress.html")
+
 def c_compiler(request):
     return render(request, "student/c_compiler.html")

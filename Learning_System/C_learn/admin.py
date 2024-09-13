@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import Course, Topic, StudentProgress
 
-# Register your models here.
+class TopicInline(admin.TabularInline):
+    model = Topic
+
+class CourseAdmin(admin.ModelAdmin):
+    inlines = [TopicInline]
+
+admin.site.register(Course, CourseAdmin)
+admin.site.register(StudentProgress)

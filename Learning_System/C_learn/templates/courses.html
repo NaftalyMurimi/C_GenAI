@@ -27,6 +27,11 @@
         <div class="accordion-item">
             <button class="accordion-btn"> <img src="{% static 'images/course.png'%}" alt="" style="height: 20px; width: 20;" />CS101 Introduction to computer programming using C language</button>
             <div class="accordion-content">
+				<div style="display: flex; justify-content: space-around; align-items: center; color: #f07909;">
+					<P><img src="{% static 'images/time.png'%}" alt="" style="height: 15px; width: 15px; margin-top: 4PX;" />
+					45 Hours</P>
+					<p><img src="{% static 'images/Certificat.png'%}" alt="" style="height: 15px; width: 15px; margin-top: 4PX;" /> Free Certificate</p>
+				</div>
 				<h1>Introduction</h1>
                 <p>This course provides a comprehensive introduction to the fundamentals of computer programming using the C language. Designed for beginners, it focuses on the core concepts of programming, including problem-solving techniques, logic building, and the development of efficient algorithms. The C language, known for its performance and close-to-hardware operations, serves as an excellent foundation for learning structured programming and basic software development.</p>
 				<h1>Topics covered</h1>
@@ -57,10 +62,12 @@
 					This course is delivered entirely online. You will be required to have access to a computer or web-capable mobile device and have consistent access to the internet to either view or download the necessary course resources and to attempt any auto-graded course assessments and the final exam.
 					<br>
 					To access the full course, including assessments and the final exam, you will need to be logged into your Learning System account and enrolled in the course. If you do not already have an account, you may create one for free here. Although you can access some of the course without logging in to your account, you should log in to maximize your course experience. For example, you cannot take assessments or track your progress unless you are logged in.
-					<br>For additional guidance, check out our  <a href="">FAQ</a>. section </p>
+					<br>For additional guidance, check out our  <a href="">FAQ</a>. section 
+				</p>
 					<br>
-				<a href="{%url 'student_dashboard'%}" style="width: 80px; height: 40px;  color: aliceblue; margin-top: 5px; padding: 20px; border-radius: 6px; background-color: blue;">Start now</a>
+					<a href="{%url 'student_dashboard'%}" style="width: 80px; height: 30px;  color: aliceblue; margin-top: 5px; padding: 20px; border-radius: 6px; background-color: rgb(10, 10, 105);">Start now</a>
             </div>
+			
         </div>
 
         

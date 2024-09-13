@@ -11,67 +11,37 @@
 <div class="course_middle">
 
 	<div class="accordion-container">
-	        <div class="accordion-item">
-            <button class="accordion-btn">Topic 1: Introduction to Programming and C Language Basics</button>
-            <div class="accordion-content">
-                <p>This is the content of section 1. It's visible when the accordion is expanded.</p>
-				<a href="{%url 'c_compiler'%}">Try it Yourself</a> &nbsp;&nbsp;&nbsp; <a href=""> Generate Code</a>
-            </div>
-        </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 2:Control Structures</button>
-            <div class="accordion-content">
-                <p>This is the content of section 2. It's visible when the accordion is expanded.</p>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure ducimus amet id, nulla dolorum repellat aperiam qui, vero a numquam vitae fuga porro odit, delectus error architecto accusantium optio perferendis.</p>
-                <ul>
-                    <li>hello</li>
-                    <li>hey</li>
-                    <li>Good</li>
-                </ul>
-            </div>
-        </div>
+        
+
+
+        {% if courses %}
+        {% for course in courses %}
+        
+        {% for topic in course.topics.all %}
         <div class="accordion-item">
-            <button class="accordion-btn">Topic 3: Functions</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
+            <button class="accordion-btn">{{ topic.name }}</button>
+            <div class="accordion-content" id="topic{{ topic.id }}">
+                <p>{{ topic.description }}</p>
+				<a href="{%url 'c_compiler'%}">Try it Yourself</a> &nbsp;&nbsp;&nbsp; <a href=""> Generate Code</a> &nbsp;&nbsp;&nbsp;<a href="">Mark as Complete</a>
             </div>
         </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 4: Arrays and Strings</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
-            </div>
-        </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 5: Pointers and Memory Management</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
-            </div>
-        </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 6: Structures and Unions</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
-            </div>
-        </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 7: Structures and Unions</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
-            </div>
-        </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 8:  File Handling</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
-            </div>
-        </div>
-		<div class="accordion-item">
-            <button class="accordion-btn">Topic 9: Introduction to Data Structures</button>
-            <div class="accordion-content">
-                <p>This is the content of section 3. It's visible when the accordion is expanded.</p>
-            </div>
-        </div>
+        {% endfor %}
+        {% endfor %}
+
+        {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+		
     </div>
 		       
 </div>
