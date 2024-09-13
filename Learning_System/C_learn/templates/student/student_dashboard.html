@@ -20,6 +20,8 @@
         {% for topic in course.topics.all %}
         <div class="accordion-item">
             <button class="accordion-btn">{{ topic.name }}</button>
+            <!-- if it does not work  -->
+
             <div class="accordion-content" id="topic{{ topic.id }}">
                 <p>{{ topic.description }}</p>
 				<a href="{%url 'c_compiler'%}">Try it Yourself</a> &nbsp;&nbsp;&nbsp; <a href=""> Generate Code</a> &nbsp;&nbsp;&nbsp;<a href="">Mark as Complete</a>
