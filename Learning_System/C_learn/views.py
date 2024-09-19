@@ -270,32 +270,127 @@ def student_dashboard(request):
     return render(request, 'student/student_dashboard.html', {'courses': courses})
 
 
+# @login_required
+# def mark_complete(request, topic_id):
+#     topic = get_object_or_404(Topic, id=topic_id)
+#     progress, created = StudentProgress.objects.get_or_create(student=request.user, topic=topic)
+#     if not progress.completed:
+#         progress.completed = True
+#         progress.save()
+    
+#     return redirect('student_dashboard')
+# @login_required
+# def student_progress(request):
+#     user = request.user
+#     courses = Course.objects.all()
+#     progress = []
+    
+#     for course in courses:
+#         topics = Topic.objects.filter(course=course)
+#         total_topics = topics.count()
+#         completed_topics = 0
+        
+#         for topic in topics:
+#             progress_record, created = StudentProgress.objects.get_or_create(student=user, topic=topic)
+#             if progress_record.completed:
+#                 completed_topics += 1
+        
+#         course_completion = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
+#         progress.append({
+#             'course_name': course.name,
+#             'completion_percentage': course_completion,
+#             'topics': topics
+#         })
+
+#     completion_percentage = sum([course['completion_percentage'] for course in progress]) / len(progress) if progress else 0
+
+#     context = {
+#         'progress': progress,
+#         'completion_percentage': completion_percentage
+#     }
+
+#     return render(request, 'student/student_progress.html', context)
+
+
 @login_required
 def mark_complete(request, topic_id):
+    # Get the topic based on topic_id
     topic = get_object_or_404(Topic, id=topic_id)
-    progress, created = StudentProgress.objects.get_or_create(student=request.user, topic=topic)
     
-    if not progress.completed:
-        progress.completed = True
-        progress.save()
-    
+    # Fetch all student progress records for the current student and this topic
+    progress_records = StudentProgress.objects.filter(student=request.user, topic=topic)
+
+    if progress_records.exists():
+        # Ensure there is only one record by deleting duplicates if needed
+        progress = progress_records.first()
+        # If there are duplicates, delete all except the first one
+        progress_records.exclude(id=progress.id).delete()
+
+        # Mark the progress as completed if not already done
+        if not progress.completed:
+            progress.completed = True
+            progress.save()
+    else:
+        # If no progress record exists, create a new one
+        StudentProgress.objects.create(student=request.user, topic=topic, completed=True)
+
     return redirect('student_dashboard')
+
 @login_required
 def student_progress(request):
     user = request.user
     courses = Course.objects.all()
     progress = []
-    
+
+    for course in courses:
+        topics_data = []
+        topics = Topic.objects.filter(course=course)
+        total_topics = topics.count()
+        completed_topics = 0
+
+        for topic in topics:
+            progress_record, created = StudentProgress.objects.get_or_create(student=user, topic=topic)
+            is_completed = progress_record.completed
+            if is_completed:
+                completed_topics += 1
+
+            # Add topic data with completion status
+            topics_data.append({
+                'name': topic.name,
+                'description': topic.description,
+                'is_completed': is_completed
+            })
+
+        course_completion = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
+        progress.append({
+            'course_name': course.name,
+            'completion_percentage': course_completion,
+            'topics': topics_data
+        })
+
+    completion_percentage = sum([course['completion_percentage'] for course in progress]) / len(progress) if progress else 0
+
+    context = {
+        'progress': progress,
+        'completion_percentage': completion_percentage
+    }
+
+    return render(request, 'student/student_progress.html', context)
+
+    user = request.user
+    courses = Course.objects.all()
+    progress = []
+
     for course in courses:
         topics = Topic.objects.filter(course=course)
         total_topics = topics.count()
         completed_topics = 0
-        
+
         for topic in topics:
             progress_record, created = StudentProgress.objects.get_or_create(student=user, topic=topic)
             if progress_record.completed:
                 completed_topics += 1
-        
+
         course_completion = (completed_topics / total_topics) * 100 if total_topics > 0 else 0
         progress.append({
             'course_name': course.name,
@@ -311,8 +406,6 @@ def student_progress(request):
     }
 
     return render(request, 'student/student_progress.html', context)
-
-
 
 
 

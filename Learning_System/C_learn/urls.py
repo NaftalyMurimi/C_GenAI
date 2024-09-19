@@ -9,6 +9,8 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('student_dashboard/', views.student_dashboard, name='student_dashboard'),
     path('student_progress/', views.student_progress, name='student_progress'),
+    path('mark_complete/<int:topic_id>/', views.mark_complete, name='mark_complete'),
+
     
     path('c_compiler/', views.c_compiler, name='c_compiler'),
   
