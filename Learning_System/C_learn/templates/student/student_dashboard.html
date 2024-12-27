@@ -1,58 +1,298 @@
-{%extends 'base.html'%}
-{%load static%}
-{% block content%}
-{%include 'navbar.html'%}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'navbar.html' %}
+<style>
+    /* Styling for main accordion */
+.accordion-container {
+    margin-top: 20px;
+}
 
-	<div class="main">  
-		<!-- removed wrap -->
-	    <div class="">  		 
-	       {% include 'student/student_sidebar.html'%}
+.accordion-item {
+    margin-bottom: 10px;
+}
 
-<div class="course_middle">
+.accordion-btn {
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    background-color: #f1f1f1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.4s;
+    border-radius: 5px;
+}
 
-	<div class="accordion-container">
-        
+.accordion-btn:hover {
+    background-color: #ddd;
+}
 
+.accordion-content {
+    display: none;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
-        {% if courses %}
-        {% for course in courses %}
-        
-        {% for topic in course.topics.all %}
-        <div class="accordion-item">
-            <button class="accordion-btn" id="text">{{ topic.name }} </button>
-            <!-- if it does not work  -->
+/* Styling for subaccordion */
+.subaccordion-container {
+    margin-top: 15px;
+    padding-left: 20px; /* Indent subtopics */
+}
 
-            <div class="accordion-content" id="topic{{ topic.id }}">
-                <p>{{ topic.description }}</p>
-				<a href="{%url 'c_compiler'%}">Try it Yourself</a> &nbsp;&nbsp;&nbsp; <a href=""> Generate Code</a>
-                 &nbsp;&nbsp;&nbsp;<a href="{% url 'mark_complete' topic.id %}" id="btn" onclick="show()">Mark as Complete</a>
+.subaccordion-item {
+    margin-bottom: 8px;
+}
+
+.subaccordion-btn {
+    width: 100%;
+    padding: 12px;
+    text-align: left;
+    background-color: #e2e2e2;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.4s;
+    border-radius: 5px;
+}
+
+.subaccordion-btn:hover {
+    background-color: #ddd;
+}
+
+.subaccordion-content {
+    display: none;
+    padding: 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+</style>
+<div class="main">  
+    <!-- removed wrap -->
+    <div class="">  		 
+        {% include 'student/student_sidebar.html' %}
+
+        <div class="course_middle">
+
+            <div class="accordion-container">
+
+                {% if courses %}
+                    {% for course in courses %}
+
+                        {% for topic in course.topics.all %}
+                            <div class="accordion-item">
+                                <button class="accordion-btn" id="text">{{ topic.name }}</button>
+                                <!-- Topic content -->
+                                <div class="accordion-content" id="topic{{ topic.id }}">
+                                    <p>{{ topic.description }}</p>
+                                    
+                                    <a href="{% url 'mark_complete' topic.id %}" id="btn" onclick="show()">Mark as Complete</a>
+
+                                    <!-- Subtopic Accordion -->
+                                    <div class="subaccordion-container">
+                                        {% for subtopic in topic.subtopics.all %}
+                                            <div class="subaccordion-item">
+                                                <button class="subaccordion-btn" id="subtext{{ subtopic.id }}">{{ subtopic.name }}</button>
+                                                
+                                                <!-- Subtopic content -->
+                                                <div class="subaccordion-content" id="subtopic{{ subtopic.id }}">
+                                                    <p>{{ subtopic.description }}</p>
+                                                    <a href="#"  id="openchatgpt">Generate Code</a>
+                                                   <!-- Trigger button (optional, to open the popover) -->
+                                                    <a href="#" id="openPopover">Try it Yourself</a>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    {% endfor %}
+                {% endif %}
+
             </div>
+
         </div>
-        {% endfor %}
-        {% endfor %}
 
-        {% endif %}
-
-
-      
-
-
-
-
-
-
-
-
-
-		
+        <div class="clear"></div>
     </div>
-		       
 </div>
-			
-           
-    	<div class="clear"></div>
- 	 </div>
-    </div>
-	{% include 'footer.html'%}
-{%endblock%}
 
+
+
+
+  
+  <!-- Modal for the compiler-->
+  <div class="overlay" id="popoverOverlay">
+    <div class="popover">
+        <div class="popover-header">
+            <h3>Code & Run with Programiz</h3>
+            <button class="close-btn" id="closePopover">X</button>
+        </div>
+        <div class="popover-body">
+            <iframe src="https://www.programiz.com/c-programming/online-compiler"
+			style="width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 5px;">
+	        </iframe>
+        </div>
+    </div>
+</div>
+  <!-- Modal for the CHATGPT-->
+  <div class="overlay" id="chatgpt">
+    <div class="popover">
+        <div class="popover-header">
+            <h3>Code & Run with Programiz</h3>
+            <button class="close-btn" id="closechatgpt">X</button>
+        </div>
+        <div class="popover-body">
+            CHATGPT-- will come here
+        </div>
+    </div>
+</div>
+<style>
+    /* Overlay for the popover (covers the entire screen) */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Make sure it appears above other content */
+}
+
+/* Styling for the popover */
+.popover {
+    background-color: white;
+    border-radius: 8px;
+    width: 950px;
+    height: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+/* Header for the popover */
+.popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popover-header h3 {
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+    font-weight: bold;
+}
+
+.close-btn:hover {
+    color: red;
+}
+
+/* Body of the popover */
+.popover-body {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+
+
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Get elements
+    const openPopoverButton = document.getElementById('openPopover');
+    const popoverOverlay = document.getElementById('popoverOverlay');
+    const closePopoverButton = document.getElementById('closePopover');
+
+    // Function to open the popover
+    openPopoverButton.addEventListener('click', function() {
+        popoverOverlay.style.display = 'flex'; // Show the popover
+    });
+
+    // Function to close the popover
+    closePopoverButton.addEventListener('click', function() {
+        popoverOverlay.style.display = 'none'; // Hide the popover
+    });
+
+    // Optional: Close popover when clicking outside of the popover (on the overlay)
+    popoverOverlay.addEventListener('click', function(event) {
+        if (event.target === popoverOverlay) {
+            popoverOverlay.style.display = 'none'; // Close popover if clicked outside
+        }
+    });
+});
+
+
+    
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // JavaScript to handle accordion behavior for both topics and subtopics
+
+// Handle main topic accordions
+document.addEventListener('DOMContentLoaded', function () {
+    var topicButtons = document.querySelectorAll('.accordion-btn');
+    var subtopicButtons = document.querySelectorAll('.subaccordion-btn');
+
+    // Toggle main topic accordion
+    topicButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var content = button.nextElementSibling;
+
+            // Toggle the display of the clicked topic content
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    });
+
+    // Toggle subtopic accordion
+    subtopicButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var subContent = button.nextElementSibling;
+
+            // Toggle the display of the clicked subtopic content
+            if (subContent.style.display === "block") {
+                subContent.style.display = "none";
+            } else {
+                subContent.style.display = "block";
+            }
+        });
+    });
+});
+
+</script>
+{% include 'footer.html' %}
+{% endblock %}

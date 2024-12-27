@@ -7,17 +7,15 @@ class Course(models.Model):
 
     def progress(self, student):
         topics = self.topics.all()
-        completed_topics = topics.filter(studentprogress__student=student, studentprogress__completed=True).count()
-        total_topics = topics.count()
-        if total_topics == 0:
+        total_subtopics = Subtopic.objects.filter(topic__in=topics).count()
+        completed_subtopics = Subtopic.objects.filter(
+            topic__in=topics,
+            studentprogress__student=student,
+            studentprogress__completed=True
+        ).count()
+        if total_subtopics == 0:
             return 0
-        return (completed_topics / total_topics) * 100
-
-    def set_progress(self, student, progress):
-        # Update or create StudentProgress record for the course
-        progress_record, created = StudentProgress.objects.get_or_create(student=student, topic__course=self)
-        progress_record.completed_percentage = progress
-        progress_record.save()
+        return (completed_subtopics / total_subtopics) * 100
 
     def __str__(self):
         return self.name
@@ -29,18 +27,49 @@ class Topic(models.Model):
     description = models.TextField()
 
     def progress(self, student):
-        progress = StudentProgress.objects.filter(student=student, topic=self).first()
+        subtopics = self.subtopics.all()
+        total_subtopics = subtopics.count()
+        completed_subtopics = subtopics.filter(
+            studentprogress__student=student,
+            studentprogress__completed=True
+        ).count()
+        if total_subtopics == 0:
+            return 0
+        return (completed_subtopics / total_subtopics) * 100
+
+    def __str__(self):
+        return self.name
+
+
+class Subtopic(models.Model):
+    topic = models.ForeignKey(Topic, related_name='subtopics', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def progress(self, student):
+        progress = StudentProgress.objects.filter(student=student, subtopic=self).first()
         return progress.completed if progress else False
+
+    def mark_complete(self, student):
+        # Mark the subtopic as complete for the student
+        progress, created = StudentProgress.objects.get_or_create(student=student, subtopic=self)
+        progress.completed = True
+        progress.save()
+
+    def __str__(self):
+        return self.name
+
 
 class StudentProgress(models.Model):
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE,null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True, blank=True)
+    subtopic = models.ForeignKey(Subtopic, on_delete=models.CASCADE, null=True, blank=True)
     completed = models.BooleanField(default=False)
+
     class Meta:
-        unique_together = ('student', 'topic')
+        unique_together = ('student', 'topic', 'subtopic')
+
     def __str__(self):
-        return f"{self.student.username} - {self.topic.name} - {'Completed' if self.completed else 'Incomplete'}"
-
-
-
-
+        topic_name = self.topic.name if self.topic else "No Topic"
+        subtopic_name = self.subtopic.name if self.subtopic else "No Subtopic"
+        return f"{self.student.username} - {topic_name} - {subtopic_name} - {'Completed' if self.completed else 'Incomplete'}"

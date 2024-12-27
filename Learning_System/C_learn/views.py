@@ -445,3 +445,91 @@ def student_profile(request):
 
 def c_compiler(request):
     return render(request, "student/c_compiler.html")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# here are my new story for subtopic
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Subtopic, StudentProgress
+
+@login_required
+def mark_complete_subtopic(request, subtopic_id):
+    subtopic = get_object_or_404(Subtopic, id=subtopic_id)
+    student = request.user
+    progress, created = StudentProgress.objects.get_or_create(student=student, subtopic=subtopic)
+    progress.completed = True
+    progress.save()
+    return redirect('course_detail', course_id=subtopic.topic.course.id)
+
+
+
+# another one
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Subtopic, StudentProgress
+
+@login_required
+def mark_subtopic_complete(request, subtopic_id):
+    subtopic = get_object_or_404(Subtopic, id=subtopic_id)
+    student = request.user
+
+    # Mark the subtopic as complete
+    progress, created = StudentProgress.objects.get_or_create(student=student, subtopic=subtopic)
+    progress.completed = True
+    progress.save()
+
+    # Redirect back to the course page
+    return redirect('your_course_page_url')  # Replace with the actual course page URL

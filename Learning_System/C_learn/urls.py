@@ -23,4 +23,18 @@ urlpatterns = [
     path('student_password_recovery/', views.student_password_recovery, name= 'student_password_recovery'),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name = 'password_reset_confirm'),
     # path('student_profile_update/<username>', views.student_profile_update, name='student_profile_update'),
+
+
+
+
+
+
+
+
+
+
+
+    # subtopic url 
+    path('mark_subtopic_complete/<int:subtopic_id>/', views.mark_subtopic_complete, name='mark_subtopic_complete'),
+    path('mark_complete_subtopic/<int:subtopic_id>/', views.mark_complete_subtopic, name='mark_complete_subtopic'),
 ]
