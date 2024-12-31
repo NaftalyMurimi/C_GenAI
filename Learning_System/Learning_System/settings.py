@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['learn.atti.ac.ke', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'ckeditor',
     'C_learn',
     'six',
     'users',
@@ -142,3 +143,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+
+
+#settingd got the editor
+CKEDITOR_CONFIGS={
+    'default':{
+        'toolbar': 'full',
+    }
+}

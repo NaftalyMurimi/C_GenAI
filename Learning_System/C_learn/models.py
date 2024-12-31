@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from ckeditor.fields import RichTextField
 
 class Course(models.Model):
     name = models.CharField(max_length=255)
@@ -44,7 +45,7 @@ class Topic(models.Model):
 class Subtopic(models.Model):
     topic = models.ForeignKey(Topic, related_name='subtopics', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = RichTextField(blank=True, null=True)
 
     def progress(self, student):
         progress = StudentProgress.objects.filter(student=student, subtopic=self).first()

@@ -91,7 +91,7 @@
                                 <button class="accordion-btn" id="text">{{ topic.name }}</button>
                                 <!-- Topic content -->
                                 <div class="accordion-content" id="topic{{ topic.id }}">
-                                    <p>{{ topic.description }}</p>
+                                    <p>{{ topic.description|safe }}</p>
                                     
                                     
 
@@ -103,7 +103,7 @@
                                                 
                                                 <!-- Subtopic content -->
                                                 <div class="subaccordion-content" id="subtopic{{ subtopic.id }}">
-                                                    <p>{{ subtopic.description }}</p>
+                                                    <p>{{ subtopic.description|safe }}</p>
                                                     <a href="#"  id="openchatgpt">Generate Code</a>
                                                    <!-- Trigger button (optional, to open the popover) -->
                                                     <a href="#" id="openPopover">Try it Yourself</a>
