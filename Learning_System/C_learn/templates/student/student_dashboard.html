@@ -104,9 +104,9 @@
                                                 <!-- Subtopic content -->
                                                 <div class="subaccordion-content" id="subtopic{{ subtopic.id }}">
                                                     <p>{{ subtopic.description|safe }}</p>
-                                                    <a href="#"  id="openchatgpt">Generate Code</a>
+                                                    <a href="#"  id="openchatgpt" class="openchatgpt">Generate Code</a>
                                                    <!-- Trigger button (optional, to open the popover) -->
-                                                    <a href="#" id="openPopover">Try it Yourself</a>
+                                                    <a href="#" id="openPopover" class="openPopoverLink">Try it Yourself</a>
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -217,55 +217,64 @@
 
 </style>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Get elements
-    const openPopoverButton = document.getElementById('openPopover');
-    const popoverOverlay = document.getElementById('popoverOverlay');
-    const closePopoverButton = document.getElementById('closePopover');
+     // JavaScript function to handle opening and closing of the overlay
+     document.addEventListener('DOMContentLoaded', function () {
+            // Get all "Try it Yourself" links and the overlay
+            const openPopoverLinks = document.querySelectorAll('.openPopoverLink');
+            const popoverOverlay = document.getElementById('popoverOverlay');
+            const closePopoverButton = document.getElementById('closePopover');
 
-    // Function to open the popover
-    openPopoverButton.addEventListener('click', function() {
-        popoverOverlay.style.display = 'flex'; // Show the popover
-    });
+            // Add event listeners to all "Try it Yourself" links
+            openPopoverLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    popoverOverlay.style.display = 'flex'; // Show the overlay
+                });
+            });
 
-    // Function to close the popover
-    closePopoverButton.addEventListener('click', function() {
-        popoverOverlay.style.display = 'none'; // Hide the popover
-    });
+            // Function to close the overlay
+            closePopoverButton.addEventListener('click', function () {
+                popoverOverlay.style.display = 'none'; // Hide the overlay
+            });
 
-    // Optional: Close popover when clicking outside of the popover (on the overlay)
-    popoverOverlay.addEventListener('click', function(event) {
-        if (event.target === popoverOverlay) {
-            popoverOverlay.style.display = 'none'; // Close popover if clicked outside
-        }
-    });
-});
+            // Optional: Close the overlay when clicking outside of the popover
+            popoverOverlay.addEventListener('click', function (event) {
+                if (event.target === popoverOverlay) {
+                    popoverOverlay.style.display = 'none'; // Hide the overlay
+                }
+            });
+        });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Get elements
-    const openPopoverButton = document.getElementById('openchatgpt');
-    const popoverOverlay = document.getElementById('chatgpt');
-    const closePopoverButton = document.getElementById('closechatgpt');
 
-    // Function to open the popover
-    openPopoverButton.addEventListener('click', function() {
-        popoverOverlay.style.display = 'flex'; // Show the popover
-    });
+// JavaScript function to handle opening and closing of the overlay
+document.addEventListener('DOMContentLoaded', function () {
+            // Get all "Try it Yourself" links and the overlay
+            const openPopoverLinks = document.querySelectorAll('.openchatgpt');
+            const popoverOverlay = document.getElementById('chatgpt');
+            const closePopoverButton = document.getElementById('closechatgpt');
 
-    // Function to close the popover
-    closePopoverButton.addEventListener('click', function() {
-        popoverOverlay.style.display = 'none'; // Hide the popover
-    });
+            // Add event listeners to all "Try it Yourself" links
+            openPopoverLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    popoverOverlay.style.display = 'flex'; // Show the overlay
+                });
+            });
 
-    // Optional: Close popover when clicking outside of the popover (on the overlay)
-    popoverOverlay.addEventListener('click', function(event) {
-        if (event.target === popoverOverlay) {
-            popoverOverlay.style.display = 'none'; // Close popover if clicked outside
-        }
-    });
-});
+            // Function to close the overlay
+            closePopoverButton.addEventListener('click', function () {
+                popoverOverlay.style.display = 'none'; // Hide the overlay
+            });
 
-    
+            // Optional: Close the overlay when clicking outside of the popover
+            popoverOverlay.addEventListener('click', function (event) {
+                if (event.target === popoverOverlay) {
+                    popoverOverlay.style.display = 'none'; // Hide the overlay
+                }
+            });
+        });
+
+
 
 </script>
 
