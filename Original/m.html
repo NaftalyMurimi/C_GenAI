@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Links to trigger the overlay -->
+    <a href="#" class="openPopoverLink">Try it Yourself 1</a>
+    <a href="#" class="openPopoverLink">Try it Yourself 2</a>
+    <a href="#" class="openPopoverLink">Try it Yourself 3</a>
+    <a href="#" class="openPopoverLink">Try it Yourself 4</a>
+
+    <!-- The Overlay -->
+    <div class="overlay" id="popoverOverlay">
+        <div class="popover">
+            <div class="popover-header">
+                <h3>Code & Run with Programiz</h3>
+                <button class="close-btn" id="closePopover">X</button>
+            </div>
+            <div class="popover-body">
+                <iframe src="https://www.programiz.com/c-programming/online-compiler"
+                        style="width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 5px;">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Overlay styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popover {
+            background-color: white;
+            border-radius: 8px;
+            width: 950px;
+            height: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .popover-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popover-header h3 {
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+
+        .popover-body {
+            margin-top: 20px;
+        }
+    </style>
+
+    <script>
+        // JavaScript function to handle opening and closing of the overlay
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all "Try it Yourself" links and the overlay
+            const openPopoverLinks = document.querySelectorAll('.openPopoverLink');
+            const popoverOverlay = document.getElementById('popoverOverlay');
+            const closePopoverButton = document.getElementById('closePopover');
+
+            // Add event listeners to all "Try it Yourself" links
+            openPopoverLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    popoverOverlay.style.display = 'flex'; // Show the overlay
+                });
+            });
+
+            // Function to close the overlay
+            closePopoverButton.addEventListener('click', function () {
+                popoverOverlay.style.display = 'none'; // Hide the overlay
+            });
+
+            // Optional: Close the overlay when clicking outside of the popover
+            popoverOverlay.addEventListener('click', function (event) {
+                if (event.target === popoverOverlay) {
+                    popoverOverlay.style.display = 'none'; // Hide the overlay
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
