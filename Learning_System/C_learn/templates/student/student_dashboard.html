@@ -104,7 +104,8 @@
                                                 <!-- Subtopic content -->
                                                 <div class="subaccordion-content" id="subtopic{{ subtopic.id }}">
                                                     <p>{{ subtopic.description|safe }}</p>
-                                                    <a href="#"  id="openchatgpt" class="openchatgpt">Generate Code</a>
+                                                    <!-- <a href="#"  id="openchatgpt" class="openchatgpt">Generate Code</a> -->
+                                                     <a href="{%url 'chatgpt'%}">Generate code</a>
                                                    <!-- Trigger button (optional, to open the popover) -->
                                                     <a href="#" id="openPopover" class="openPopoverLink">Try it Yourself</a>
                                                 </div>
@@ -145,18 +146,7 @@
         </div>
     </div>
 </div>
-  <!-- Modal for the CHATGPT-->
-  <div class="overlay" id="chatgpt">
-    <div class="popover">
-        <div class="popover-header">
-            <h3>Code & Run with Programiz</h3>
-            <button class="close-btn" id="closechatgpt">X</button>
-        </div>
-        <div class="popover-body">
-            CHATGPT-- will come here
-        </div>
-    </div>
-</div>
+
 <style>
     /* Overlay for the popover (covers the entire screen) */
 .overlay {
@@ -277,7 +267,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 </script>
-
 
 
 

@@ -533,3 +533,63 @@ def mark_subtopic_complete(request, subtopic_id):
 
     # Redirect back to the course page
     return redirect('your_course_page_url')  # Replace with the actual course page URL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#chatGPT 
+from django.shortcuts import render, redirect
+import google.generativeai as genai
+key = "AIzaSyAjrpQv0DIzZH7OGlcy4cQaJQl4ScPHX9I"
+
+# A simple global list to store tasks (resets when the server restarts)
+prompt = []
+prompt_answer = []
+
+def chatgpt(request):
+    """
+    Render the main to-do list page with both prompts (questions) and answers.
+    """
+    tasks = zip(reversed(prompt), reversed(prompt_answer))  # Combine questions and answers
+    return render(request, 'student/chagpt.html', {'tasks': tasks})
+
+def add_prompt(request):
+    """
+    Add a new question and its generated answer to the global lists.
+    """
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        
+        if question:
+            genai.configure(api_key=key)
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            formatted_question = f"Always write the answer in point form, well-formatted, and brief: {question}"
+            response = model.generate_content(formatted_question)
+            
+            # Append the question and its response to the respective lists
+            prompt.append(question)
+            prompt_answer.append(response.text if response.text else "No answer generated.")
+        
+        return redirect('chatgpt')
+
+def delete_prompt(request, task_id):
+    """
+    Delete a specific question and its corresponding answer from the global lists.
+    """
+    if 0 <= task_id < len(prompt):  # Ensure the task ID is valid
+        del prompt[task_id]
+        del prompt_answer[task_id]
+    
+    return redirect('chatgpt')
+

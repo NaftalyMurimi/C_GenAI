@@ -30,8 +30,10 @@ urlpatterns = [
 
 
 
-
-
+    #chatGPT
+    path('chatgpt/', views.chatgpt, name='chatgpt'),
+    path('add/', views.add_prompt, name='add_prompt'),
+    path('delete/<int:task_id>/', views.delete_prompt, name='delete_prompt'),
 
 
     # subtopic url 

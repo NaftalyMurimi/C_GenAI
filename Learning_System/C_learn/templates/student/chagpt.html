@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <style>
+        /* Overlay for the popover (covers the entire screen) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Make sure it appears above other content */
+        }
+
+        /* Styling for the popover */
+        .popover {
+            background-color: white;
+            border-radius: 8px;
+            width: 950px;
+            height: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Header for the popover */
+        .popover-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popover-header p {
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            float: right;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+
+        /* Body of the popover */
+        /* Body of the popover */
+.popover-body {
+    margin-top: 20px;
+    font-size: 14px;
+    max-height: 550px; /* Adjust height as necessary */
+    overflow-y: auto;  /* Enables scrolling for overflow */
+}
+
+    /* Styling for the QA container */
+    .qa-container {
+        padding-bottom: 80px; /* Space for the input field */
+    }
+
+    /* Styling for each question and answer pair */
+    .qa-item {
+        margin-bottom: 20px; /* Space between Q&A items */
+    }
+
+    /* Question styling */
+    .question {
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: right;
+        margin-bottom: 10px; /* Space between question and answer */
+    }
+
+    /* Answer styling */
+    .answer {
+        background-color: #d1f7d1;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+    /* Style for the form */
+.inline-form {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between input and button */
+    position: fixed; /* Sticks to the bottom of the viewport */
+    bottom: 0; /* Position at the bottom */
+    align-items: center;
+    width: 60%; /* Full width */
+    background-color: white; /* Background to cover any content beneath */
+    padding: 10px 20px; /* Add padding for spacing */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for distinction */
+    z-index: 1000; /* Ensure it appears above other content */
+    
+}
+
+/* Input field with bottom border only */
+.name-input {
+    flex: 1; /* Allow the input field to grow */
+    border: none; /* Remove all borders */
+    border-bottom: 2px solid #ccc; /* Add bottom border */
+    padding: 5px;
+    font-size: 16px;
+    outline: none; /* Remove focus outline */
+    transition: border-color 0.3s ease;
+}
+
+/* Change border color on focus */
+.name-input:focus {
+    border-bottom: 2px solid #007BFF; /* Highlight color */
+}
+
+/* Submit button styling */
+.submit-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for the button */
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+
+    </style>
+</head>
+<body>
+    
+    <!-- Modal for the CHATGPT-->
+    <div class="overlay" id="chatgpt">
+        <div class="popover">
+    <div class="popover-header">
+        <p class="center-align">Copy your prompts here</p>
+        <button class="close-btn" id="closechatgpt">Close</button>
+    </div>
+    <div class="popover-body">
+        <!-- Questions and Answers Container -->
+        <div class="qa-container">
+            {% for question, answer in tasks %}
+                <div class="qa-item">
+                    <div class="question">
+                        <strong>Q:</strong> {{ question }}
+                    </div>
+                    <div class="answer">
+                        <strong>A:</strong> {{ answer }}
+                    </div>
+                    <a href="{% url 'delete_prompt' forloop.counter0 %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                </div>
+                <hr>
+            {% empty %}
+                <p>No questions or answers yet.</p>
+            {% endfor %}
+        </div>
+
+    <!-- Input Group Positioned at the Bottom -->
+    <form class="inline-form" method="post" action="{% url 'add_prompt' %}">
+        {% csrf_token %}
+        <input type="text" name="question" class="name-input" placeholder="Enter your question" required>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+    
+        
+    </div>
+</div>
+
+    </div>
+    
+    <script>
+        // JavaScript function to handle opening and closing of the overlay
+        document.addEventListener('DOMContentLoaded', function () {
+            const popoverOverlay = document.getElementById('chatgpt');
+            const closePopoverButton = document.getElementById('closechatgpt');
+
+            // Show the popover immediately on page load
+            popoverOverlay.style.display = 'flex';
+
+            // Function to close the overlay and redirect to home
+            closePopoverButton.addEventListener('click', function () {
+                popoverOverlay.style.display = 'none'; // Hide the overlay
+                window.location.href = "{% url 'student_dashboard' %}"; // Redirect to the home page
+            });
+
+            // Optional: Close the overlay when clicking outside of the popover
+            popoverOverlay.addEventListener('click', function (event) {
+                if (event.target === popoverOverlay) {
+                    popoverOverlay.style.display = 'none'; // Hide the overlay
+                    window.location.href = "{% url 'student_dashboard' %}"; // Redirect to the home page
+                }
+            });
+        });
+    </script>
+</body>
+</html>

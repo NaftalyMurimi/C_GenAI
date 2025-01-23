@@ -3,60 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accordion with Sub-Accordions</title>
+    <title>To-Do List with Gemini API</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Accordion with Sub-Accordions</h2>
+    <div class="container mt-5">
+        <h1 class="text-center">ChatGPT To-Do List</h1>
 
-    <div class="accordion" id="mainAccordion">
-
-        <!-- First Accordion -->
-        {% if courses %}
-            {% for course in courses %}
-                {% for topic in course.topics.all %}
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    {{ topic.name }}
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#mainAccordion">
-                <div class="accordion-body">
-                    <div class="accordion" id="subAccordionOne">
-                        <!-- Sub-Accordion 1 -->
-                        {% if topic.subtopics.all %}
-                        {% for subtopic in topic.subtopics.all %}
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="subHeadingOneOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#subCollapseOneOne" aria-expanded="false" aria-controls="subCollapseOneOne">
-                                    {{ subtopic.name }}
-                                </button>
-                            </h2>
-                            <div id="subCollapseOneOne" class="accordion-collapse collapse" aria-labelledby="subHeadingOneOne" data-bs-parent="#subAccordionOne">
-                                <div class="accordion-body">
-                                    {{ subtopic.description }}
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% endif %}
-                     
-                    </div>
-                </div>
+        <form id="taskForm" class="mt-4">
+            <div class="mb-3">
+                <label for="question" class="form-label">Enter your question:</label>
+                <input type="text" id="question" class="form-control" placeholder="Type your question..." required>
             </div>
-        </div>
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
 
-       
-
+        <h2 class="mt-5">Tasks</h2>
+        <ul id="taskList" class="list-group mt-3"></ul>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // API key and global task list
+const apiKey = "AIzaSyDow29-Cwaeu5EQz2Q1ppnfijxZn1AkNxc";
+let tasks = [];
+
+// Function to render tasks on the page
+function renderTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = ""; // Clear the task list
+
+    tasks.forEach((task, index) => {
+        const taskItem = document.createElement('li');
+        taskItem.textContent = task;
+
+        // Add a delete button for each task
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "btn btn-danger btn-sm ms-2";
+        deleteButton.onclick = () => deletePrompt(index);
+
+        taskItem.appendChild(deleteButton);
+        taskList.appendChild(taskItem);
+    });
+}
+
+// Function to add a new prompt
+async function addPrompt(question) {
+    if (!question.trim()) {
+        alert("Please enter a valid question.");
+        return;
+    }
+
+    try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta2/models/gemini-1.5:generateText?key=${apiKey}`;
+        const requestData = {
+            prompt: {
+                text: `Always write the answer in point form, well-formatted, and brief: ${question}`
+            }
+        };
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const generatedResponse = data.candidates[0]?.content || "No response generated.";
+            tasks.push(generatedResponse);
+            renderTasks();
+        } else {
+            console.error("Failed to fetch response from API.");
+        }
+    } catch (error) {
+        console.error("Error adding prompt:", error);
+    }
+}
+
+// Function to delete a task
+function deletePrompt(taskIndex) {
+    if (taskIndex >= 0 && taskIndex < tasks.length) {
+        tasks.splice(taskIndex, 1); // Remove the task at the specified index
+        renderTasks();
+    }
+}
+
+// Event listener for the form submission
+document.getElementById('taskForm').addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent form submission
+    const questionInput = document.getElementById('question');
+    addPrompt(questionInput.value); // Add the new prompt
+    questionInput.value = ""; // Clear the input field
+});
+
+    </script>
 </body>
 </html>
